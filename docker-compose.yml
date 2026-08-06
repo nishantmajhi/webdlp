@@ -1,0 +1,19 @@
+services:
+  webdlp:
+    build: .
+    ports:
+      - "${APP_PORT:-5476}:${APP_PORT:-5476}"
+    volumes:
+      - ./downloads:/app/downloads
+      - ./database:/app/database
+    networks:
+      - webdlp-network
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - APP_PORT=${APP_PORT:-5476}
+
+networks:
+  webdlp-network:
+    driver: bridge

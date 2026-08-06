@@ -1,0 +1,361 @@
+.offcanvas {
+  position: fixed;
+  top: 0;
+  left: -450px;
+  width: 450px;
+  height: 100vh;
+  background-color: white;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+  transition: left 0.3s ease;
+  z-index: 1001;
+  overflow-y: auto;
+}
+
+.offcanvas.active {
+  left: 0;
+}
+
+.offcanvas-header {
+  position: sticky;
+  top: 0;
+  background-color: #f8f9fa;
+  padding: 1.5rem;
+  border-bottom: 1px solid #dee2e6;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 10;
+}
+
+.offcanvas-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+#closeBtn {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: #666;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.25rem;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    transform 0.2s;
+}
+
+#closeBtn:hover {
+  background-color: #e9ecef;
+  color: #000;
+}
+#closeBtn:active {
+  transform: scale(0.95);
+}
+
+.offcanvas-body {
+  padding: 1.5rem;
+}
+
+.option-section {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.option-section:last-child {
+  border-bottom: none;
+}
+
+.option-section h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1.1rem;
+  color: #495057;
+  font-weight: 600;
+}
+
+/* ── Generic checkbox / radio rows ─────────────────────── */
+.option-section label,
+.checkbox-row,
+.radio-row {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 0;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border-radius: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.option-section label:hover,
+.checkbox-row:hover,
+.radio-row:hover {
+  background-color: #f8f9fa;
+}
+
+.option-section input[type="checkbox"],
+.checkbox-row input[type="checkbox"] {
+  margin-right: 0.75rem;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #dc3545;
+  flex-shrink: 0;
+}
+
+.option-section input[type="radio"],
+.radio-row input[type="radio"] {
+  margin-right: 0.75rem;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #dc3545;
+  flex-shrink: 0;
+}
+
+/* ── Mode toggle (Video / Audio only) ──────────────────── */
+.mode-toggle {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.mode-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.65rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+  background-color: #fff;
+  color: #555;
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    background-color 0.2s,
+    color 0.2s;
+}
+
+.mode-btn:hover {
+  background-color: #f8f9fa;
+  border-color: #999;
+}
+
+.mode-btn.active {
+  background-color: #000;
+  border-color: #000;
+  color: #fff;
+}
+
+.mode-btn.active:hover {
+  background-color: red;
+  border-color: red;
+}
+
+/* ── Select inputs (format / audio format) ─────────────── */
+.field-label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 0.4rem;
+  cursor: default;
+}
+
+.field-label:hover {
+  background-color: transparent;
+}
+
+.option-section select {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  font-size: 0.85rem;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+  background-color: #fff;
+  color: #222;
+  margin-bottom: 0.75rem;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.option-section select:focus,
+.option-section select:hover {
+  border: 1px solid;
+  border-image: linear-gradient(
+      to left,
+      #ff0000,
+      #ff0022,
+      #ff0044,
+      #ff0088,
+      #ff00aa
+    )
+    1;
+}
+
+/* ── Paired checkbox + value input rows ────────────────── */
+.paired-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.paired-row .checkbox-row {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.paired-input {
+  width: 70px;
+  flex-shrink: 0;
+  padding: 0.5rem 0.6rem;
+  font-size: 0.8rem;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+  text-align: center;
+  box-sizing: border-box;
+  transition:
+    border-color 0.2s,
+    background-color 0.2s,
+    color 0.2s;
+}
+
+.paired-input:disabled {
+  background-color: #f1f1f1;
+  color: #aaa;
+  cursor: not-allowed;
+}
+
+.paired-input:not(:disabled):focus,
+.paired-input:not(:disabled):hover {
+  border: 1px solid;
+  border-image: linear-gradient(
+      to left,
+      #ff0000,
+      #ff0022,
+      #ff0044,
+      #ff0088,
+      #ff00aa
+    )
+    1;
+}
+
+/* ── Cookie setup button ───────────────────────────────── */
+.cookie-setup-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.75rem 0.85rem;
+  font-size: 0.88rem;
+  font-family: inherit;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+  background-color: #fff;
+  color: #222;
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    background-color 0.2s,
+    color 0.2s;
+  box-sizing: border-box;
+}
+
+.cookie-setup-btn:hover {
+  background-color: #f8f9fa;
+  border-color: red;
+  color: red;
+}
+
+.cookie-setup-btn i:first-child {
+  font-size: 1.1rem;
+}
+
+.cookie-setup-btn span {
+  flex: 1;
+  text-align: left;
+}
+
+.cookie-setup-btn__chevron {
+  font-size: 0.9rem;
+  color: #999;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+  z-index: 1000;
+}
+
+.overlay.active {
+  display: block;
+}
+
+@media (orientation: portrait) {
+  body {
+    margin: 2rem;
+  }
+
+  .header > button {
+    top: 1rem;
+    left: 1rem;
+    width: 45px;
+    height: 45px;
+  }
+
+  form {
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  form > *:first-child {
+    padding: 0.75rem;
+    width: 100%;
+  }
+
+  .offcanvas {
+    width: 90%;
+    left: -90%;
+  }
+
+  .chips {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .offcanvas {
+    width: 100%;
+    left: -100%;
+  }
+
+  .chips {
+    gap: 0.4rem;
+  }
+
+  .chip {
+    font-size: 0.6rem;
+    padding: 0.2rem 0.5rem;
+  }
+
+  .log {
+    height: 50dvh;
+    font-size: 0.8rem;
+  }
+}

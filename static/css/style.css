@@ -1,0 +1,397 @@
+body {
+  margin: 2rem 4rem;
+  font-family: sans-serif;
+}
+
+body *:focus {
+  outline: transparent;
+}
+
+body > header {
+  position: relative;
+}
+
+body > header > button {
+  position: absolute;
+  left: 0;
+  width: min-content;
+  height: 100%;
+  background-color: transparent;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+  z-index: 999;
+  transition: transform 0.2s;
+}
+body > header > button:active {
+  transform: scale(0.95);
+}
+
+body > header > button span {
+  display: block;
+  width: 25px;
+  height: 3px;
+  background-color: #000;
+  border-radius: 2px;
+  transition: all 0.3s;
+}
+body > header > button:hover span,
+body > header > button:focus span {
+  background-color: red;
+}
+
+body > header > button.active span:nth-child(1) {
+  transform: rotate(45deg) translate(8px, 8px);
+}
+body > header > button.active span:nth-child(2) {
+  opacity: 0;
+}
+body > header > button.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(8px, -8px);
+}
+
+body > header > h1 {
+  margin: 0;
+  text-align: center;
+  text-decoration: underline;
+  text-underline-offset: 0.25rem;
+}
+
+body > header > h1 span {
+  color: red;
+}
+
+main {
+  margin-top: 2rem;
+}
+
+form {
+  margin-block: 0 1rem;
+  display: flex;
+  gap: 2px;
+}
+
+form > * {
+  border-radius: 0.25rem;
+  box-sizing: border-box;
+  font-size: 0.84rem;
+}
+
+input[type="text"] {
+  border: 1px solid grey;
+  padding: 0.75rem 1.75rem;
+  flex-grow: 1;
+  text-align: right;
+  transition: border 0.4s;
+}
+input[type="text"]:focus,
+input[type="text"]:hover {
+  border: 1px solid;
+  border-image: linear-gradient(
+      to left,
+      #ff0000,
+      #ff0022,
+      #ff0044,
+      #ff0088,
+      #ff00aa
+    )
+    1;
+}
+
+input[type="submit"] {
+  border: 1px solid black;
+  padding: 0.75rem;
+  width: max-content;
+  color: white;
+  background-color: black;
+  cursor: pointer;
+  transition:
+    border 0.4s,
+    background-color 0.4s;
+}
+input[type="submit"]:focus,
+input[type="submit"]:hover {
+  border: 1px solid red;
+  background-color: red;
+}
+input[type="submit"]:active {
+  border: 1px solid black;
+  background-color: black;
+}
+
+/* ── Active settings chip row ─────────────────────────── */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  background-color: whitesmoke;
+  color: #555;
+  border: 1px solid #e5e5e5;
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    color 0.2s,
+    background-color 0.2s;
+}
+
+.chip:hover {
+  border-color: #ccc;
+  color: #000;
+}
+
+.chip i {
+  font-size: 0.9rem;
+  line-height: 1;
+}
+
+.chip--accent {
+  background-color: #000;
+  color: #fff;
+  border-color: #000;
+}
+
+.chip--accent:hover {
+  background-color: red;
+  border-color: red;
+  color: #fff;
+}
+
+/* ── Step-list activity log ───────────────────────────── */
+.log {
+  border-radius: 0.25rem;
+  padding: 1.4rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  box-sizing: border-box;
+  width: 100%;
+  height: 60dvh;
+  overflow-y: auto;
+  font-size: 0.85rem;
+  background-color: whitesmoke;
+}
+
+.log-empty {
+  color: #999;
+  text-align: center;
+  margin: auto;
+  font-size: 0.85rem;
+}
+
+.log-step {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.log-step i {
+  font-size: 1.05rem;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.log-step--done i {
+  color: #2e7d32;
+}
+
+.log-step--pending {
+  opacity: 0.4;
+}
+
+.log-step--active .log-spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid #dcdcdc;
+  border-top-color: #000;
+  border-radius: 50%;
+  flex-shrink: 0;
+  animation: logSpin 0.8s linear infinite;
+}
+
+.log-progress {
+  padding-left: 1.65rem;
+}
+
+.log-progress-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: #777;
+  margin-bottom: 0.3rem;
+}
+
+.log-progress-bar {
+  height: 6px;
+  border-radius: 3px;
+  background-color: #e5e5e5;
+  overflow: hidden;
+}
+
+.log-progress-bar-fill {
+  height: 100%;
+  background-color: #1a7a3a;
+  border-radius: 3px;
+  transition: width 0.2s ease;
+}
+
+/* ── Error state ───────────────────────────────────────── */
+.log--error {
+  border: 1px solid #c0392b;
+}
+
+.log-step--error i {
+  color: #c0392b;
+}
+
+.log-error-msg {
+  margin-left: 1.65rem;
+  padding: 0.6rem 0.75rem;
+  background-color: #fff5f5;
+  border-radius: 0.25rem;
+  font-size: 0.78rem;
+  color: #c0392b;
+  line-height: 1.5;
+}
+
+.log-error-actions {
+  margin-left: 1.65rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.log-error-actions button {
+  font-size: 0.78rem;
+  padding: 0.5rem 0.85rem;
+  border-radius: 0.25rem;
+  border: 1px solid #ccc;
+  background: #fff;
+  color: #555;
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    background-color 0.2s,
+    color 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.log-error-actions button:hover {
+  background-color: #e9ecef;
+  border-color: #999;
+  color: #000;
+}
+
+.log-error-actions button.log-error-cookies {
+  border-color: red;
+  color: red;
+}
+
+/* ── Save file button (shown after successful download) ── */
+.log-save-actions {
+  margin: 1rem 0.6rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.log-save-btn {
+  font-size: 0.78rem;
+  padding: 0.5rem 0.85rem;
+  border-radius: 0.25rem;
+  border: 1px solid #1a7a3a;
+  background: #1a7a3a;
+  color: #fff;
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    background-color 0.2s,
+    color 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-weight: 600;
+}
+
+.log-save-btn:hover {
+  background-color: #145e2c;
+  border-color: #145e2c;
+}
+
+.log-save-btn:active {
+  background-color: #000;
+  border-color: #000;
+}
+
+/* ── "N items skipped" panel (partial playlist failures) ── */
+.log-problem-panel {
+  margin: 0.4rem 0.6rem 1rem;
+  border: 1px solid #e8a33d;
+  border-radius: 0.25rem;
+  background-color: #fff9ee;
+  overflow: hidden;
+}
+
+.log-problem-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #8a5a00;
+}
+
+.log-problem-heading i {
+  color: #e8a33d;
+  flex-shrink: 0;
+}
+
+.log-problem-list {
+  list-style: none;
+  margin: 0;
+  padding: 0 0.75rem 0.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.log-problem-list li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+
+.log-problem-label {
+  font-family: monospace;
+  color: #8a5a00;
+  flex-shrink: 0;
+}
+
+.log-problem-message {
+  color: #6b6b6b;
+}
+
+@keyframes logSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -1,0 +1,470 @@
+/* =============================================================
+   cookie.css - YouTube Cookie Setup modal
+   Single-screen layout: paste cookies OR pick a browser for
+   inline step-by-step instructions.
+   Themed to match webdlp (light bg, black/grey, red accent).
+   ============================================================= */
+
+/* ── Variables ─────────────────────────────────────────── */
+:root {
+  --ck-bg: #fff;
+  --ck-surface: #fff;
+  --ck-surface-2: whitesmoke;
+  --ck-border: #dee2e6;
+  --ck-border-dark: #333;
+  --ck-primary: #000;
+  --ck-primary-hover: red;
+  --ck-primary-active: #000;
+  --ck-danger: #c0392b;
+  --ck-text: #222;
+  --ck-text-muted: #555;
+  --ck-text-link: red;
+  --ck-radius: 0.5rem;
+  --ck-radius-sm: 0.25rem;
+  --ck-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+  --ck-font: sans-serif;
+}
+
+/* ── Overlay ───────────────────────────────────────────── */
+.ck-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+  z-index: 9000;
+  display: none;
+  animation: ckFadeIn 0.2s ease;
+}
+
+/* ── Modal container ───────────────────────────────────── */
+.ck-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9001;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  animation: ckSlideUp 0.25s cubic-bezier(0.34, 1.26, 0.64, 1);
+}
+
+.ck-modal-inner {
+  background: var(--ck-surface);
+  border: 1px solid var(--ck-border-dark);
+  border-radius: var(--ck-radius);
+  box-shadow: var(--ck-shadow);
+  width: 100%;
+  max-width: 460px;
+  max-height: 90vh;
+  overflow-y: auto;
+  font-family: var(--ck-font);
+  color: var(--ck-text);
+}
+
+/* ── Modal header ──────────────────────────────────────── */
+.ck-modal-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--ck-border);
+  position: sticky;
+  top: 0;
+  background: var(--ck-surface-2);
+  z-index: 1;
+}
+
+.ck-modal-icon {
+  font-size: 1.4rem;
+  line-height: 1;
+  flex-shrink: 0;
+  color: var(--ck-text-muted);
+}
+
+.ck-modal-header h2 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--ck-text);
+  flex: 1;
+}
+
+.ck-close {
+  background: none;
+  border: 1px solid var(--ck-text-link);
+  color: var(--ck-text-link);
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: var(--ck-radius-sm);
+  line-height: 1;
+  transition:
+    border-color 0.2s,
+    color 0.2s,
+    background-color 0.2s;
+}
+
+.ck-close:hover {
+  background: #e9ecef;
+  border-color: var(--ck-danger);
+  color: var(--ck-danger);
+}
+
+/* ── Modal body ────────────────────────────────────────── */
+.ck-modal-body {
+  padding: 20px 24px;
+}
+
+.ck-lead {
+  margin: 0 0 16px;
+  font-size: 0.88rem;
+  line-height: 1.65;
+  color: var(--ck-text-muted);
+}
+
+.ck-textarea {
+  width: 100%;
+  min-height: 110px;
+  background: whitesmoke;
+  border: 1px solid #ccc;
+  border-radius: var(--ck-radius-sm);
+  color: var(--ck-text);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 0.76rem;
+  line-height: 1.5;
+  padding: 10px 12px;
+  resize: vertical;
+  box-sizing: border-box;
+  transition: border-color 0.25s;
+  outline: none;
+}
+
+.ck-textarea:focus {
+  border: 1px solid;
+  border-image: linear-gradient(
+      to left,
+      #ff0000,
+      #ff0022,
+      #ff0044,
+      #ff0088,
+      #ff00aa
+    )
+    1;
+}
+
+.ck-textarea::placeholder {
+  color: #aaa;
+}
+
+.ck-error {
+  margin-top: 10px;
+  padding: 10px 14px;
+  background: #fff5f5;
+  border: 1px solid #f5c6cb;
+  border-radius: var(--ck-radius-sm);
+  color: var(--ck-danger);
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+/* ── Browser picker (icon buttons) ─────────────────────── */
+.ck-browser-label {
+  display: block;
+  margin: 18px 0 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ck-text-muted);
+}
+
+.ck-browser-grid {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.ck-browser-btn {
+  flex: 1;
+  min-width: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 10px 8px;
+  background: whitesmoke;
+  border: 1px solid #ccc;
+  border-radius: var(--ck-radius-sm);
+  color: var(--ck-text-muted);
+  font-family: var(--ck-font);
+  font-size: 0.74rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s,
+    color 0.2s;
+}
+
+.ck-browser-btn:hover {
+  background: #e9ecef;
+  border-color: #999;
+  color: #000;
+}
+
+.ck-browser-btn--active {
+  background: #fff;
+  border-color: #000;
+  color: #000;
+  font-weight: 700;
+}
+
+.ck-browser-btn img,
+.ck-browser-btn svg {
+  width: 24px;
+  height: 24px;
+  display: block;
+}
+
+/* ── Inline browser steps panel ────────────────────────── */
+.ck-panel {
+  display: none;
+  margin-top: 14px;
+}
+
+.ck-panel--active {
+  display: block;
+}
+
+.ck-panel-ext {
+  margin: 0 0 10px;
+  font-size: 0.82rem;
+  color: var(--ck-text-muted);
+}
+
+.ck-panel-ext a {
+  color: red;
+}
+
+.ck-steps {
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+  counter-reset: ck-step;
+}
+
+.ck-steps li {
+  counter-increment: ck-step;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 10px 12px;
+  margin-bottom: 6px;
+  background: whitesmoke;
+  border-radius: var(--ck-radius-sm);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--ck-text);
+  border: 1px solid var(--ck-border);
+}
+
+.ck-steps li::before {
+  content: counter(ck-step);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  background: #000;
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.ck-steps li span {
+  flex: 1;
+}
+
+.ck-steps li a {
+  color: red;
+}
+
+.ck-steps li strong {
+  color: #000;
+}
+
+.ck-steps code {
+  font-family: "SFMono-Regular", Consolas, monospace;
+  background: #e5e5e5;
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+/* ── Modal footer ──────────────────────────────────────── */
+.ck-modal-footer {
+  padding: 14px 24px 18px;
+  border-top: 1px solid var(--ck-border);
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+/* ── Buttons - match style.css submit button ───────────── */
+.ck-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--ck-radius-sm);
+  font-family: var(--ck-font);
+  font-size: 0.84rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    border-color 0.4s,
+    background-color 0.4s;
+  box-sizing: border-box;
+}
+
+.ck-btn:active {
+  border-color: #000 !important;
+  background-color: #000 !important;
+  color: #fff !important;
+}
+
+.ck-btn-primary {
+  background-color: #000;
+  color: #fff;
+  border: 1px solid #000;
+}
+
+.ck-btn-primary:hover:not(:disabled) {
+  background-color: red;
+  border-color: red;
+}
+
+.ck-btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.ck-btn-ghost {
+  background-color: transparent;
+  color: #555;
+  border: 1px solid #ccc;
+}
+
+.ck-btn-ghost:hover {
+  background-color: #e9ecef;
+  border-color: #999;
+  color: #000;
+}
+
+/* ── Spinner ───────────────────────────────────────────── */
+.ck-spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: ckSpin 0.7s linear infinite;
+}
+
+/* ── Toast notification ────────────────────────────────── */
+.ck-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: #fff;
+  border: 1px solid #000;
+  color: #000;
+  padding: 12px 22px;
+  border-radius: var(--ck-radius-sm);
+  font-family: var(--ck-font);
+  font-size: 0.88rem;
+  font-weight: 500;
+  z-index: 9999;
+  opacity: 0;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+  white-space: nowrap;
+}
+
+.ck-toast--visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ── Animations ────────────────────────────────────────── */
+@keyframes ckFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes ckSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes ckSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ── Scrollbar styling (modal body) ───────────────────── */
+.ck-modal-inner::-webkit-scrollbar {
+  width: 6px;
+}
+.ck-modal-inner::-webkit-scrollbar-track {
+  background: transparent;
+}
+.ck-modal-inner::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 3px;
+}
+
+/* ── Responsive ────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .ck-modal-inner {
+    max-width: 100%;
+    border-radius: var(--ck-radius) var(--ck-radius) 0 0;
+  }
+  .ck-modal {
+    align-items: flex-end;
+    padding: 0;
+  }
+  .ck-browser-grid {
+    gap: 4px;
+  }
+  .ck-browser-btn {
+    min-width: 64px;
+    padding: 8px 6px;
+  }
+  .ck-modal-footer {
+    flex-direction: column;
+  }
+  .ck-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

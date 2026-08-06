@@ -1,0 +1,17 @@
+{
+  "tasks": {
+    "start": "deno run --allow-net --allow-run=yt-dlp --allow-read --allow-write --allow-env --env-file=.env main.ts",
+    "dev": "deno run --watch --allow-net --allow-run=yt-dlp --allow-read --allow-write --allow-env --env-file=.env main.ts",
+    "check": "deno check main.ts"
+  },
+  "compilerOptions": {
+    "strict": true,
+    "lib": ["deno.ns", "deno.unstable", "dom"]
+  },
+  "fmt": {
+    "useTabs": false,
+    "indentWidth": 2,
+    "lineWidth": 100
+  },
+  "exclude": ["downloads/", "database/", "cookie.txt"]
+}

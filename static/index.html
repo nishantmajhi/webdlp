@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <title>web-dlp</title>
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/offcanvas.css" />
+    <link rel="stylesheet" href="/css/cookie.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/3.1.0/tabler-icons.min.css"
+    />
+
+    <script src="/js/script.js"></script>
+    <script src="/js/cookie.js"></script>
+  </head>
+  <body>
+    <header>
+      <button
+        type="button"
+        title="Preferences Menu"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <h1>GUI for <span>yt-dlp</span></h1>
+    </header>
+
+    <main>
+      <form>
+        <input
+          type="text"
+          name="URL"
+          placeholder="Enter/Paste YouTube URL"
+          autofocus
+        />
+        <input type="submit" value="Start Download" />
+      </form>
+
+      <!-- Active settings summary -->
+      <div id="chips" class="chips" aria-label="Active settings">
+        <span class="chip chip--accent" data-chip="mode">
+          <i class="ti ti-video" aria-hidden="true"></i>
+          <span data-chip-text>Video, best quality</span>
+        </span>
+        <span class="chip" data-chip="subs">
+          <i class="ti ti-cc" aria-hidden="true"></i>
+          <span data-chip-text>Subtitles on</span>
+        </span>
+        <span class="chip" data-chip="cookies">
+          <i class="ti ti-cookie" aria-hidden="true"></i>
+          <span data-chip-text>No cookies</span>
+        </span>
+      </div>
+
+      <!-- Step-list progress log -->
+      <output id="log" class="log">
+        <div class="log-empty">No activity yet</div>
+      </output>
+    </main>
+
+    <!-- Offcanvas Panel -->
+    <aside id="offcanvas" class="offcanvas">
+      <header class="offcanvas-header">
+        <h2>Preferences</h2>
+        <button id="closeBtn" aria-label="Close preferences panel">
+          &times;
+        </button>
+      </header>
+
+      <nav class="offcanvas-body">
+
+        <!-- Mode toggle: Video vs Audio only -->
+        <section class="option-section">
+          <h3>Mode</h3>
+          <div class="mode-toggle" role="radiogroup" aria-label="Download mode">
+            <button
+              type="button"
+              class="mode-btn active"
+              id="mode-video"
+              data-mode="video"
+              aria-pressed="true"
+            >
+              <i class="ti ti-video" aria-hidden="true"></i>
+              Video
+            </button>
+            <button
+              type="button"
+              class="mode-btn"
+              id="mode-audio"
+              data-mode="audio"
+              aria-pressed="false"
+            >
+              <i class="ti ti-music" aria-hidden="true"></i>
+              Audio only
+            </button>
+          </div>
+        </section>
+
+        <!-- Video format options (hidden in audio mode) -->
+        <section class="option-section" id="video-format-section">
+          <h3>Quality</h3>
+          <label class="field-label" for="format-select">Video quality</label>
+          <select id="format-select" data-arg="--format">
+            <option value="best" selected>Best available</option>
+            <option value="bestvideo[height<=1080]+bestaudio">1080p</option>
+            <option value="bestvideo[height<=720]+bestaudio">720p</option>
+            <option value="bestvideo[height<=480]+bestaudio">480p</option>
+          </select>
+
+          <label class="checkbox-row">
+            <input
+              type="checkbox"
+              name="format-bestvideo"
+              data-arg="--merge-output-format"
+              data-value="mp4"
+              checked
+            />
+            Merge to MP4
+          </label>
+        </section>
+
+        <!-- Audio format options (hidden in video mode) -->
+        <section class="option-section" id="audio-format-section" hidden>
+          <h3>Audio format</h3>
+          <label class="field-label" for="audio-format-select">Convert to</label>
+          <select id="audio-format-select" data-arg="--audio-format">
+            <option value="mp3" selected>MP3</option>
+            <option value="m4a">M4A</option>
+            <option value="flac">FLAC</option>
+            <option value="best">Best (no re-encode)</option>
+          </select>
+        </section>
+
+        <!-- Playlist handling: mutually exclusive -->
+        <section class="option-section">
+          <h3>Playlist handling</h3>
+          <label class="radio-row">
+            <input
+              type="radio"
+              name="playlist-mode"
+              data-arg="--no-playlist"
+              checked
+            />
+            Video only (ignore playlist)
+          </label>
+          <label class="radio-row">
+            <input
+              type="radio"
+              name="playlist-mode"
+              data-arg="--yes-playlist"
+            />
+            Download playlist if URL has one
+          </label>
+          <label class="radio-row">
+            <input
+              type="radio"
+              name="playlist-mode"
+              data-arg="--playlist-items"
+              data-value="1"
+            />
+            Only first item
+          </label>
+        </section>
+
+        <!-- SponsorBlock -->
+        <section class="option-section">
+          <h3>SponsorBlock</h3>
+          <label class="checkbox-row">
+            <input
+              type="checkbox"
+              name="sponsorblock-remove"
+              data-arg="--sponsorblock-remove"
+              data-value="sponsor"
+            />
+            Remove sponsor segments
+          </label>
+          <label class="checkbox-row">
+            <input
+              type="checkbox"
+              name="sponsorblock-mark"
+              data-arg="--sponsorblock-mark"
+              data-value="all"
+            />
+            Mark chapters (intro, outro, etc.)
+          </label>
+        </section>
+
+        <!-- Subtitles & metadata -->
+        <section class="option-section">
+          <h3>Subtitles &amp; metadata</h3>
+          <label class="checkbox-row">
+            <input
+              type="checkbox"
+              name="write-subs"
+              data-arg="--write-subs"
+              data-chip="subs"
+              data-chip-on="Subtitles on"
+              data-chip-off="Subtitles off"
+              checked
+            />
+            Download subtitles
+          </label>
+          <label class="checkbox-row">
+            <input
+              type="checkbox"
+              name="embed-subs"
+              data-arg="--embed-subs"
+              checked
+            />
+            Embed subtitles in video
+          </label>
+          <label class="checkbox-row">
+            <input
+              type="checkbox"
+              name="embed-thumbnail"
+              data-arg="--embed-thumbnail"
+              checked
+            />
+            Embed thumbnail
+          </label>
+          <label class="checkbox-row">
+            <input
+              type="checkbox"
+              name="embed-metadata"
+              data-arg="--embed-metadata"
+              checked
+            />
+            Embed metadata
+          </label>
+          <label class="checkbox-row">
+            <input
+              type="checkbox"
+              name="embed-chapters"
+              data-arg="--embed-chapters"
+              checked
+            />
+            Embed chapter markers
+          </label>
+        </section>
+
+        <!-- Network: value-bearing options paired with inputs -->
+        <section class="option-section">
+          <h3>Network</h3>
+          <div class="paired-row">
+            <label class="checkbox-row">
+              <input
+                type="checkbox"
+                id="limit-rate-toggle"
+                name="limit-rate"
+                data-arg="--limit-rate"
+              />
+              Limit download rate
+            </label>
+            <input
+              type="text"
+              id="limit-rate-value"
+              class="paired-input"
+              placeholder="1M"
+              value="1M"
+              disabled
+            />
+          </div>
+          <div class="paired-row">
+            <label class="checkbox-row">
+              <input
+                type="checkbox"
+                id="retries-toggle"
+                name="retries"
+                data-arg="--retries"
+                checked
+              />
+              Retries
+            </label>
+            <input
+              type="text"
+              id="retries-value"
+              class="paired-input"
+              value="10"
+            />
+          </div>
+          <div class="paired-row">
+            <label class="checkbox-row">
+              <input
+                type="checkbox"
+                id="concurrent-fragments-toggle"
+                name="concurrent-fragments"
+                data-arg="--concurrent-fragments"
+              />
+              Concurrent fragments
+            </label>
+            <input
+              type="text"
+              id="concurrent-fragments-value"
+              class="paired-input"
+              placeholder="5"
+              value="5"
+              disabled
+            />
+          </div>
+        </section>
+
+        <!-- Filesystem Options -->
+        <section class="option-section">
+          <h3>Filesystem options</h3>
+          <label class="radio-row">
+            <input
+              type="radio"
+              name="overwrite-mode"
+              data-arg="--continue"
+              checked
+            />
+            Resume partially downloaded files
+          </label>
+          <label class="radio-row">
+            <input
+              type="radio"
+              name="overwrite-mode"
+              data-arg="--no-continue"
+            />
+            Restart downloads from the beginning
+          </label>
+          <label class="checkbox-row">
+            <input
+              type="checkbox"
+              name="no-overwrites"
+              data-arg="--no-overwrites"
+            />
+            Do not overwrite existing files
+          </label>
+        </section>
+
+        <!-- Verbosity -->
+        <section class="option-section">
+          <h3>Verbosity</h3>
+          <label class="checkbox-row">
+            <input type="checkbox" name="verbose" data-arg="--verbose" />
+            Verbose output
+          </label>
+          <label class="checkbox-row">
+            <input type="checkbox" name="quiet" data-arg="--quiet" />
+            Quiet mode
+          </label>
+          <label class="checkbox-row">
+            <input
+              type="checkbox"
+              name="no-warnings"
+              data-arg="--no-warnings"
+            />
+            Ignore warnings
+          </label>
+        </section>
+
+        <!-- Authentication -> opens cookie modal -->
+        <section class="option-section">
+          <h3>Authentication</h3>
+          <button
+            type="button"
+            id="cookie-setup-btn"
+            class="cookie-setup-btn"
+            data-chip="cookies"
+            data-chip-on="Cookies enabled"
+            data-chip-off="No cookies"
+          >
+            <i class="ti ti-cookie" aria-hidden="true"></i>
+            <span>Set up cookies for restricted videos</span>
+            <i class="ti ti-chevron-right cookie-setup-btn__chevron" aria-hidden="true"></i>
+          </button>
+        </section>
+
+        <!-- Advanced -->
+        <section class="option-section">
+          <h3>Advanced</h3>
+          <label class="checkbox-row">
+            <input
+              type="checkbox"
+              name="geo-bypass"
+              data-arg="--geo-bypass"
+              checked
+            />
+            Bypass geographic restriction
+          </label>
+          <label class="checkbox-row">
+            <input
+              type="checkbox"
+              name="age-limit"
+              data-arg="--age-limit"
+              data-value="21"
+            />
+            Set age limit (21)
+          </label>
+          <label class="checkbox-row">
+            <input
+              type="checkbox"
+              name="prefer-free-formats"
+              data-arg="--prefer-free-formats"
+            />
+            Prefer free video formats
+          </label>
+        </section>
+      </nav>
+    </aside>
+
+    <div id="overlay" class="overlay"></div>
+  </body>
+</html>
