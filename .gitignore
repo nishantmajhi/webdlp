@@ -1,0 +1,11 @@
+# Deno
+.deno/
+
+# App runtime data
+database/*.*
+downloads/*.*
+!downloads/temp/.gitkeep
+cookie.txt
+
+# Env
+.env.local

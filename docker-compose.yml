@@ -1,0 +1,27 @@
+services:
+  webdlp:
+    build: .
+    ports:
+      # Published on the host's loopback only. webdlp has no authentication and
+      # spawns yt-dlp, so it must not be reachable from the rest of the network.
+      # Change this to "${APP_PORT:-5476}:${APP_PORT:-5476}" only after putting
+      # a reverse proxy that authenticates in front of it.
+      - "127.0.0.1:${APP_PORT:-5476}:${APP_PORT:-5476}"
+    volumes:
+      - ./downloads:/app/downloads
+      - ./database:/app/database
+    networks:
+      - webdlp-network
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - APP_PORT=${APP_PORT:-5476}
+      # Inside the container the app must listen on all interfaces, because the
+      # container's own loopback is not reachable from the host. The boundary is
+      # the published port above.
+      - APP_HOST=0.0.0.0
+
+networks:
+  webdlp-network:
+    driver: bridge
